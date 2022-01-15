@@ -4,6 +4,10 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<Version>1.0.1</Version>
+	  <Authors>musictopia</Authors>
+	  <Description>Event Aggravation without reflection.  Intended to use a source geoerator with it to hook up the different actions to subscribe.</Description>
+	  <PackageProjectUrl>https://github.com/musictopia2/MessengingHelpers</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
