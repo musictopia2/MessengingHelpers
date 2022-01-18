@@ -35,23 +35,30 @@ public class EventAggregator : IEventAggregator
         {
             throw new CustomBasicException($"Duplicates are not allowed for Publish.  The message was {typeof(T)} and the arguments was {arguments}");
         }
-        if (list.Count == 0)
+        //if (list.Count == 0)
+        //{
+        //    throw new CustomBasicException($"There is nobody subscribing for Publish.  The message was {typeof(T)} and the arguments was {arguments}");
+        //}
+        var item = list.SingleOrDefault();
+        if (item is not null)
         {
-            throw new CustomBasicException($"There is nobody subscribing for Publish.  The message was {typeof(T)} and the arguments was {arguments}");
-        }
-        var item = list.Single();
-        if (item.Action is null)
-        {
-            throw new CustomBasicException($"The subscriber never invoked an action for Publish.  The message was {typeof(T)} and the arguments was {arguments}");
-        }
-        item.Action.Invoke(message);
-        if (item.IsDead)
-        {
-            lock (_lock)
+            //its possible that if you publish and nobody is there then should do nothing
+            //to help with the blazor mvvm stuff.
+            if (item.Action is null)
             {
-                ListHelpersClass<T>.RegularActions.RemoveSpecificItem(item); //because it is now dead.
+                throw new CustomBasicException($"The subscriber never invoked an action for Publish.  The message was {typeof(T)} and the arguments was {arguments}");
+            }
+            item.Action.Invoke(message);
+            if (item.IsDead)
+            {
+                lock (_lock)
+                {
+                    ListHelpersClass<T>.RegularActions.RemoveSpecificItem(item); //because it is now dead.
+                }
             }
         }
+        
+        
     }
     public async Task PublishAsync<T>(T message, string arguments = "") //hopefully this simple.
     {
@@ -64,21 +71,24 @@ public class EventAggregator : IEventAggregator
         {
             throw new CustomBasicException($"Duplicates are not allowed for PublishAsync.  The message was {typeof(T)} and the arguments was {arguments}");
         }
-        if (list.Count == 0)
+        //if (list.Count == 0)
+        //{
+        //    throw new CustomBasicException($"There is nobody subscribing for PublishAsync.  The message was {typeof(T)} and the arguments was {arguments}");
+        //}
+        var item = list.SingleOrDefault();
+        if (item is not null)
         {
-            throw new CustomBasicException($"There is nobody subscribing for PublishAsync.  The message was {typeof(T)} and the arguments was {arguments}");
-        }
-        var item = list.Single();
-        if (item.Action is null)
-        {
-            throw new CustomBasicException($"The subscriber never invoked an action for PublishAsync.  The message was {typeof(T)} and the arguments was {arguments}");
-        }
-        await item.Action.Invoke(message);
-        if (item.IsDead)
-        {
-            lock (_lock)
+            if (item.Action is null)
             {
-                ListHelpersClass<T>.AsyncActions.RemoveSpecificItem(item); //because it is now dead.
+                throw new CustomBasicException($"The subscriber never invoked an action for PublishAsync.  The message was {typeof(T)} and the arguments was {arguments}");
+            }
+            await item.Action.Invoke(message);
+            if (item.IsDead)
+            {
+                lock (_lock)
+                {
+                    ListHelpersClass<T>.AsyncActions.RemoveSpecificItem(item); //because it is now dead.
+                }
             }
         }
     }
