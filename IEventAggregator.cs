@@ -43,4 +43,8 @@ public interface IEventAggregator
     /// <param name="arguments">Extra information so 2 subscribers can reuse the class but something else is needed.</param>
     /// </param>
     void Publish<T>(T message, string arguments = "");
+
+    Task PublishAllAsync<T>(T message); //if you are doing all attempt with no tags.
+    void PublicAll<T>(T message); //no tags if you do publish all.
+
 }

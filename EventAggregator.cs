@@ -24,6 +24,33 @@ public class EventAggregator : IEventAggregator
             return ListHelpersClass<T>.RegularActions.Any(x => x.Tag == arguments && x.IsDead == false);
         }
     }
+    public void PublicAll<T>(T message)
+    {
+        BasicList<CustomRegularAction<T>> list;
+        lock (_lock)
+        {
+            list = ListHelpersClass<T>.RegularActions.Where(xx => xx.Tag == "").ToBasicList();
+        }
+        if (list.Count == 0)
+        {
+            throw new CustomBasicException($"There was nobody subscribing to type {typeof(T)}");
+        }
+        foreach (var item in list)
+        {
+            if (item.Action is null)
+            {
+                throw new CustomBasicException($"The subscriber never invoked an action for Publish.  The message was {typeof(T)}");
+            }
+            item.Action.Invoke(message);
+            if (item.IsDead)
+            {
+                lock (_lock)
+                {
+                    ListHelpersClass<T>.RegularActions.RemoveSpecificItem(item); //because it is now dead.
+                }
+            }
+        }
+    }
     public void Publish<T>(T message, string arguments = "")
     {
         BasicList<CustomRegularAction<T>> list;
@@ -57,8 +84,33 @@ public class EventAggregator : IEventAggregator
                 }
             }
         }
-        
-        
+    }
+    public async Task PublishAllAsync<T>(T message)
+    {
+        BasicList<CustomAsyncAction<T>> list;
+        lock (_lock)
+        {
+            list = ListHelpersClass<T>.AsyncActions.Where(xx => xx.Tag == "").ToBasicList();
+        }
+        if (list.Count == 0)
+        {
+            throw new CustomBasicException($"There was nobody subscribing to type {typeof(T)}");
+        }
+        foreach (var item in list)
+        {
+            if (item.Action is null)
+            {
+                throw new CustomBasicException($"The subscriber never invoked an action for PublishAsync.  The message was {typeof(T)}");
+            }
+            await item.Action.Invoke(message);
+            if (item.IsDead)
+            {
+                lock (_lock)
+                {
+                    ListHelpersClass<T>.AsyncActions.RemoveSpecificItem(item); //because it is now dead.
+                }
+            }
+        }
     }
     public async Task PublishAsync<T>(T message, string arguments = "") //hopefully this simple.
     {
