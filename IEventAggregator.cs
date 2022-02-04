@@ -45,6 +45,6 @@ public interface IEventAggregator
     void Publish<T>(T message, string arguments = "");
 
     Task PublishAllAsync<T>(T message); //if you are doing all attempt with no tags.
-    void PublicAll<T>(T message); //no tags if you do publish all.
+    void PublishAll<T>(T message); //no tags if you do publish all.
 
 }

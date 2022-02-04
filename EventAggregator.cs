@@ -24,17 +24,18 @@ public class EventAggregator : IEventAggregator
             return ListHelpersClass<T>.RegularActions.Any(x => x.Tag == arguments && x.IsDead == false);
         }
     }
-    public void PublicAll<T>(T message)
+    public void PublishAll<T>(T message)
     {
         BasicList<CustomRegularAction<T>> list;
         lock (_lock)
         {
             list = ListHelpersClass<T>.RegularActions.Where(xx => xx.Tag == "").ToBasicList();
         }
-        if (list.Count == 0)
-        {
-            throw new CustomBasicException($"There was nobody subscribing to type {typeof(T)}");
-        }
+        //has to allow to publish to all even if nobody is subscribing (because of clock solitaire).  if nobody is subscribing, just ignore.
+        //if (list.Count == 0)
+        //{
+        //    throw new CustomBasicException($"There was nobody subscribing to type {typeof(T)}");
+        //}
         foreach (var item in list)
         {
             if (item.Action is null)
@@ -92,10 +93,11 @@ public class EventAggregator : IEventAggregator
         {
             list = ListHelpersClass<T>.AsyncActions.Where(xx => xx.Tag == "").ToBasicList();
         }
-        if (list.Count == 0)
-        {
-            throw new CustomBasicException($"There was nobody subscribing to type {typeof(T)}");
-        }
+        //if nobody is subscribing, then just ignore.  because there can be cases where you publish but the listeners has not been set up yet.
+        //if (list.Count == 0)
+        //{
+        //    throw new CustomBasicException($"There was nobody subscribing to type {typeof(T)}");
+        //}
         foreach (var item in list)
         {
             if (item.Action is null)
