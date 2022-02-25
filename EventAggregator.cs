@@ -24,12 +24,12 @@ public class EventAggregator : IEventAggregator
             return ListHelpersClass<T>.RegularActions.Any(x => x.Tag == arguments && x.IsDead == false);
         }
     }
-    public void PublishAll<T>(T message)
+    public void PublishAll<T>(T message, string arguments = "")
     {
         BasicList<CustomRegularAction<T>> list;
         lock (_lock)
         {
-            list = ListHelpersClass<T>.RegularActions.Where(xx => xx.Tag == "").ToBasicList();
+            list = ListHelpersClass<T>.RegularActions.Where(xx => xx.Tag == arguments).ToBasicList();
         }
         //has to allow to publish to all even if nobody is subscribing (because of clock solitaire).  if nobody is subscribing, just ignore.
         //if (list.Count == 0)
@@ -86,12 +86,12 @@ public class EventAggregator : IEventAggregator
             }
         }
     }
-    public async Task PublishAllAsync<T>(T message)
+    public async Task PublishAllAsync<T>(T message, string arguments = "")
     {
         BasicList<CustomAsyncAction<T>> list;
         lock (_lock)
         {
-            list = ListHelpersClass<T>.AsyncActions.Where(xx => xx.Tag == "").ToBasicList();
+            list = ListHelpersClass<T>.AsyncActions.Where(xx => xx.Tag == arguments).ToBasicList();
         }
         //if nobody is subscribing, then just ignore.  because there can be cases where you publish but the listeners has not been set up yet.
         //if (list.Count == 0)

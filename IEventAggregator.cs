@@ -43,8 +43,7 @@ public interface IEventAggregator
     /// <param name="arguments">Extra information so 2 subscribers can reuse the class but something else is needed.</param>
     /// </param>
     void Publish<T>(T message, string arguments = "");
-
-    Task PublishAllAsync<T>(T message); //if you are doing all attempt with no tags.
-    void PublishAll<T>(T message); //no tags if you do publish all.
-
+    //looks like you had to include tags even for publishall because a game like countdown has more than one gameboard it needs to print but it has tags to it.
+    Task PublishAllAsync<T>(T message, string arguments = "");
+    void PublishAll<T>(T message, string arguments = "");
 }
