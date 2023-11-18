@@ -148,10 +148,7 @@ public class EventAggregator : IEventAggregator
     }
     public void Subscribe<T>(object subscriber, Action<T> action, string tag)
     {
-        if (subscriber == null)
-        {
-            throw new ArgumentNullException(nameof(subscriber));
-        }
+        ArgumentNullException.ThrowIfNull(subscriber);
         lock (_lock)
         {
             if (ListHelpersClass<T>.RegularActions.Any(xx => xx.Matches(subscriber) && xx.Tag == tag))
@@ -166,10 +163,7 @@ public class EventAggregator : IEventAggregator
     }
     public void Subscribe<T>(object subscriber, Func<T, Task> action, string tag)
     {
-        if (subscriber == null)
-        {
-            throw new ArgumentNullException(nameof(subscriber));
-        }
+        ArgumentNullException.ThrowIfNull(subscriber);
         lock (_lock)
         {
             if (ListHelpersClass<T>.AsyncActions.Any(xx => xx.Matches(subscriber) && xx.Tag == tag))
@@ -184,10 +178,7 @@ public class EventAggregator : IEventAggregator
     }
     public void UnsubscribeSingle<T>(object subscriber, string tag = "")
     {
-        if (subscriber == null)
-        {
-            throw new ArgumentNullException(nameof(subscriber));
-        }
+        ArgumentNullException.ThrowIfNull(subscriber);
         lock (_lock)
         {
             var lists1 = ListHelpersClass<T>.RegularActions.Where(xx => xx.Matches(subscriber) && xx.Tag == tag).ToBasicList();
@@ -204,10 +195,7 @@ public class EventAggregator : IEventAggregator
     }
     public void UnsubscribeAll<T>(object subscriber)
     {
-        if (subscriber == null)
-        {
-            throw new ArgumentNullException(nameof(subscriber));
-        }
+        ArgumentNullException.ThrowIfNull(subscriber);
         lock (_lock)
         {
             var lists1 = ListHelpersClass<T>.RegularActions.Where(xx => xx.Matches(subscriber)).ToBasicList();
