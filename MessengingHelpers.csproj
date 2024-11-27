@@ -1,17 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<Version>7.0.1</Version>
-	  <Authors>musictopia</Authors>
-	  <Description>Event Aggravation without reflection.  Intended to use a source geoerator with it to hook up the different actions to subscribe.</Description>
-	  <PackageProjectUrl>https://github.com/musictopia2/MessengingHelpers</PackageProjectUrl>
+    <Version>9.0.1</Version>
+    <Authors>musictopia</Authors>
+    <Description>Event Aggravation without reflection.  Intended to use a source geoerator with it to hook up the different actions to subscribe.</Description>
+    <PackageProjectUrl>https://github.com/musictopia2/MessengingHelpers</PackageProjectUrl>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="CommonBasicLibraries" Version="8.0.1" />
+    <PackageReference Include="CommonBasicLibraries" Version="9.0.1" />
   </ItemGroup>
-
 </Project>
