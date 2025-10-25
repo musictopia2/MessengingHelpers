@@ -1,15 +1,19 @@
 ﻿namespace MessengingHelpers;
 public class EventAggregator : IEventAggregator
 {
-    private readonly object _lock = new();
-    //public void Clear<T>()
-    //{
-    //    lock (_lock)
-    //    {
-    //        ListHelpersClass<T>.AsyncActions.Clear();
-    //        ListHelpersClass<T>.RegularActions.Clear();
-    //    }
-    //}
+    public EventAggregator()
+    {
+        ClearAll();
+    }
+    private readonly Lock _lock = new();
+    public void ClearSingle<T>()
+    {
+        lock (_lock)
+        {
+            ListHelpersClass<T>.AsyncActions.Clear();
+            ListHelpersClass<T>.RegularActions.Clear();
+        }
+    }
     public bool HandlerAsyncExistsFor<T>(string arguments = "")
     {
         lock (_lock)
@@ -210,7 +214,7 @@ public class EventAggregator : IEventAggregator
     //        }
     //    }
     //}
-    public void ClearAll()
+    private static void ClearAll()
     {
         EventListRegistry.ClearAll();
     }
