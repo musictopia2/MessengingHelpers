@@ -6,7 +6,10 @@ public interface IEventAggregator
 {
     //in the last version of the game package, i never did any clearing.  maybe not even needed anymore.
     //was going to remove.  however, the only problem is since this cannot be generic, then means that does need a way to clear for each of the types.  otherwise, will be hosed for future games.
-    void Clear<T>();
+    //void Clear<T>();
+    //thanks to ai, was able to figure out how to truly clear all without needing to make generic.
+    void ClearAll();
+
     void Subscribe<T>(object subscriber, Action<T> action, string tag); //can go ahead and make required since source generators will handle this anyways
     void Subscribe<T>(object subscriber, Func<T, Task> action, string tag);
     void UnsubscribeSingle<T>(object subscriber, string tag = ""); //can go ahead and make required since source generators will handle this anyways

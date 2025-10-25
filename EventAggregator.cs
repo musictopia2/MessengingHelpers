@@ -2,14 +2,14 @@
 public class EventAggregator : IEventAggregator
 {
     private readonly object _lock = new();
-    public void Clear<T>()
-    {
-        lock (_lock)
-        {
-            ListHelpersClass<T>.AsyncActions.Clear();
-            ListHelpersClass<T>.RegularActions.Clear();
-        }
-    }
+    //public void Clear<T>()
+    //{
+    //    lock (_lock)
+    //    {
+    //        ListHelpersClass<T>.AsyncActions.Clear();
+    //        ListHelpersClass<T>.RegularActions.Clear();
+    //    }
+    //}
     public bool HandlerAsyncExistsFor<T>(string arguments = "")
     {
         lock (_lock)
@@ -209,5 +209,9 @@ public class EventAggregator : IEventAggregator
                 ListHelpersClass<T>.AsyncActions.RemoveSpecificItem(item);
             }
         }
+    }
+    public void ClearAll()
+    {
+        EventListRegistry.ClearAll();
     }
 }
