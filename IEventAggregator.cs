@@ -13,7 +13,7 @@ public interface IEventAggregator
     void Subscribe<T>(object subscriber, Action<T> action, string tag); //can go ahead and make required since source generators will handle this anyways
     void Subscribe<T>(object subscriber, Func<T, Task> action, string tag);
     void UnsubscribeSingle<T>(object subscriber, string tag = ""); //can go ahead and make required since source generators will handle this anyways
-    void UnsubscribeAll<T>(object subscriber);
+    //void UnsubscribeAll<T>(object subscriber);
 
     /// <summary>
     /// Searches the subscribed handlers to check if we have a handler regular for

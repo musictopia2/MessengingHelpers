@@ -193,23 +193,23 @@ public class EventAggregator : IEventAggregator
             }
         }
     }
-    public void UnsubscribeAll<T>(object subscriber)
-    {
-        ArgumentNullException.ThrowIfNull(subscriber);
-        lock (_lock)
-        {
-            var lists1 = ListHelpersClass<T>.RegularActions.Where(xx => xx.Matches(subscriber)).ToBasicList();
-            foreach (var item in lists1)
-            {
-                ListHelpersClass<T>.RegularActions.RemoveSpecificItem(item);
-            }
-            var lists2 = ListHelpersClass<T>.AsyncActions.Where(xx => xx.Matches(subscriber)).ToBasicList();
-            foreach (var item in lists2)
-            {
-                ListHelpersClass<T>.AsyncActions.RemoveSpecificItem(item);
-            }
-        }
-    }
+    //public void UnsubscribeAll<T>(object subscriber)
+    //{
+    //    ArgumentNullException.ThrowIfNull(subscriber);
+    //    lock (_lock)
+    //    {
+    //        var lists1 = ListHelpersClass<T>.RegularActions.Where(xx => xx.Matches(subscriber)).ToBasicList();
+    //        foreach (var item in lists1)
+    //        {
+    //            ListHelpersClass<T>.RegularActions.RemoveSpecificItem(item);
+    //        }
+    //        var lists2 = ListHelpersClass<T>.AsyncActions.Where(xx => xx.Matches(subscriber)).ToBasicList();
+    //        foreach (var item in lists2)
+    //        {
+    //            ListHelpersClass<T>.AsyncActions.RemoveSpecificItem(item);
+    //        }
+    //    }
+    //}
     public void ClearAll()
     {
         EventListRegistry.ClearAll();
