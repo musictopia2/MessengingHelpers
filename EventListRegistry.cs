@@ -20,6 +20,6 @@ internal static class EventListRegistry
                 l.Clear();
             }
         }
-        _all.Clear(); //maybe this too (?)
+        //_all.Clear(); //maybe this too (?)
     }
 }
